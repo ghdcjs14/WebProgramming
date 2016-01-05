@@ -37,11 +37,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-							sc.getInitParameter("url"),
-							sc.getInitParameter("username"),
-							sc.getInitParameter("password"));
+			conn = (Connection)sc.getAttribute("conn");
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(
 								" select MNO, EMAIL, MNAME, CRE_DATE from MEMBERS "
@@ -102,7 +98,6 @@ public class MemberUpdateServlet extends HttpServlet {
 			throw new ServletException(e);
 		} finally {
 			try {if(stmt != null) stmt.close(); } catch(Exception e) {}
-			try {if(conn != null) conn.close(); } catch(Exception e) {}
 		}
 		
 		
