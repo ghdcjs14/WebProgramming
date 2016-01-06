@@ -19,7 +19,7 @@ public class MemberAddServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("member/MemberForm.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/member/MemberForm.jsp");
 		rd.forward(request, response);
 	}
 
