@@ -51,13 +51,14 @@ public class MemberDao {
 		
 		try {
 			stmt = connection.prepareStatement(
-							" insert into MEMBERS( MNAME, PWD, EMAIL, CRE_DATE, MOD_DATE ) " 
-							+ "values ( ?, ?, ?, now(), now()) ");
-			stmt.setString(1, member.getName());
+							"INSERT INTO MEMBERS( EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE ) " 
+							+ " VALUES ( ?, ?, ?, NOW(), NOW() ) ");
+			stmt.setString(1, member.getEmail());
 			stmt.setString(2, member.getPassword());
-			stmt.setString(3, member.getEmail());
+			stmt.setString(3, member.getName());
 			
 			return stmt.executeUpdate();
+			
 		} catch(Exception e) {
 			throw e;
 		} finally {
@@ -70,7 +71,7 @@ public class MemberDao {
 		
 		try {
 			stmt = connection.prepareStatement(
-							" delete from MEMBERS where MNO = ? ");
+							" DELETE FROM MEMBERS WHERE MNO = ? ");
 			stmt.setInt(1, no);
 			
 			return stmt.executeUpdate();
@@ -87,9 +88,9 @@ public class MemberDao {
 		
 		try {
 			stmt = connection.prepareStatement(
-							" select MNO, MNAME, EMAIL, CRE_DATE "
-							+ " from MEMBER " 
-							+ " where no = ? ");
+							" SELECT MNO, MNAME, EMAIL, CRE_DATE "
+							+ " FROM MEMBERS " 
+							+ " WHERE MNO = ? ");
 			stmt.setInt(1, no);
 			rs = stmt.executeQuery();
 			
@@ -113,8 +114,8 @@ public class MemberDao {
 		
 		try {
 			 stmt = connection.prepareStatement(
-					 				" update MEMBERS set EMAIL = ?, MNAME = ?, MOD_DATE = now() "
-					 				+ " where MNO = ? ");
+					 				" UPDATE MEMBERS SET EMAIL = ?, MNAME = ?, MOD_DATE = NOW() "
+					 				+ " WHERE MNO = ? ");
 			 stmt.setString(1, member.getEmail());
 			 stmt.setString(2, member.getName());
 			 stmt.setInt(3, member.getNo());
