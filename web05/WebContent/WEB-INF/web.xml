@@ -21,12 +21,14 @@
 	</context-param>
 	
 	<!-- ServletContext 사용하기 위해 클라인언트 요청 없이 load-on-startup 설정을 통해 서블릿 생성   -->
-	<!--  실행요청을 하지 않기 떄문에 servlet-maaping이 없다. -->
+	<!--  실행요청을 하지 않기 떄문에 servlet-maaping이 없다.  :  ContextLoaderListener로 대체-->
+	<!-- 
 	<servlet>
 		<servlet-name>AppInitServlet</servlet-name>
 		<servlet-class>spms.servlets.AppInitServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	 -->
 	
 	<!-- 필터 배치 정보는 어노테이션으로 변경 -->
 	<!-- 필터 선언 -->

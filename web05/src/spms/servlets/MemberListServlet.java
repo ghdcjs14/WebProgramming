@@ -23,10 +23,10 @@ public class MemberListServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection)sc.getAttribute("conn");
 			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+			
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+
 			
 			request.setAttribute("members", memberDao.selectList());
 			

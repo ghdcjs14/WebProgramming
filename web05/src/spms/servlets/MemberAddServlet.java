@@ -31,14 +31,12 @@ public class MemberAddServlet extends HttpServlet {
 //		request.setCharacterEncoding("UTF-8");
 		try {
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection)sc.getAttribute("conn");
 			
 			Member member = new Member().setName(request.getParameter("name"))
 															.setEmail(request.getParameter("email"))
 															.setPassword("password");
 			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			
 			memberDao.insert(member);
 			
