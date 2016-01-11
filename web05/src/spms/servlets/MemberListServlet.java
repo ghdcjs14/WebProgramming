@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import spms.dao.MemberDao;
 import spms.vo.Member;
 
+// 프런트 컨트롤러 적용
 @WebServlet("/member/list")
 public class MemberListServlet extends HttpServlet {
 	
@@ -24,23 +25,13 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			
-			
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-
-			
 			request.setAttribute("members", memberDao.selectList());
 			
-			response.setContentType("text/html; charset=UTF-8");
-			
-			// JSP로 출력을 위임한다.
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
-			rd.include(request, response);
+			request.setAttribute("viewUrl", "/member/MemberList.jsp");
 			
 		} catch(Exception e) {
-//			throw new ServletException(e);
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 }

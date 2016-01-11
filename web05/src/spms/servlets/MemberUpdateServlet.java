@@ -55,21 +55,15 @@ public class MemberUpdateServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			
-			Member member = new Member().setNo(Integer.parseInt(request.getParameter("no")))
-															.setName(request.getParameter("name"))
-															.setEmail(request.getParameter("email"));
-			
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			
+			Member member = (Member)request.getAttribute("member");
 			memberDao.update(member);
 			
-			response.sendRedirect("list");
+			request.setAttribute("viewUrl", "redirect:list.do");
 					
 		} catch(Exception e) {
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		} 
 	}
 }

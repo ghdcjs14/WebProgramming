@@ -14,13 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import spms.dao.MemberDao;
 import spms.vo.Member;
 
+// 프런트 컨트롤러 적용
 @WebServlet("/member/add")
 public class MemberAddServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/member/MemberForm.jsp");
-		rd.forward(request, response);
+		request.setAttribute("viewUrl", "/member/MemberForm.jsp");
 	}
 
 	@Override
@@ -32,16 +32,16 @@ public class MemberAddServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			
-			Member member = new Member().setName(request.getParameter("name"))
-															.setEmail(request.getParameter("email"))
-															.setPassword("password");
-			
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			
+			Member member = (Member)request.getAttribute("member");
 			memberDao.insert(member);
 			
 			// 결과를 출력하지 않고 리다이렉트로 보낸다.
-			response.sendRedirect("list");
+//			response.sendRedirect("list");
+			
+			// 프런트 컨트롤러 사용
+			request.setAttribute("viewUrl", "redirect:list.do");
 			
 			
 			// Redirect  사용으로 결과 페이지 필요없음
@@ -61,9 +61,7 @@ public class MemberAddServlet extends HttpServlet {
 //			response.addHeader("Refresh","1; url=list");
 			
 		} catch(Exception e) {
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 	
