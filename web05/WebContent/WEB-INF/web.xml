@@ -3,26 +3,26 @@
   <display-name>web05</display-name>
  
 	<resource-ref>
-		<res-ref-name>jdbc/study</res-ref-name>
+		<res-ref-name>jdbc/studydb</res-ref-name>
 		<res-type>javax.sql.DataSource</res-type>
 		<res-auth>Container</res-auth>
 	</resource-ref>
  <!-- 컨텍스트 매개변수 -->
 	<context-param>
 		<param-name>driver</param-name>
-		<param-value>com.mysql.jdbc.Driver</param-value>
+		<param-value>org.postgresql.Driver</param-value>
 	</context-param>
 	<context-param>
 		<param-name>url</param-name>
-		<param-value>jdbc:mysql://localhost/studydb</param-value>
+		<param-value>jdbc:postgresql://localhost:5432/hong</param-value>
 	</context-param>
 	<context-param>
 		<param-name>username</param-name>
-		<param-value>study</param-value>
+		<param-value>hong</param-value>
 	</context-param>	
  	<context-param>
 		<param-name>password</param-name>
-		<param-value>study</param-value>
+		<param-value>hong</param-value>
 	</context-param>
 	
 	<!-- ServletContext 사용하기 위해 클라인언트 요청 없이 load-on-startup 설정을 통해 서블릿 생성   -->
