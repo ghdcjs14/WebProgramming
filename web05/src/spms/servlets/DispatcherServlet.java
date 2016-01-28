@@ -11,14 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bind.DataBinding;
+import bind.ServletRequestDataBinder;
 import spms.controls.Controller;
-import spms.controls.LogInController;
-import spms.controls.LogOutController;
-import spms.controls.MemberAddController;
-import spms.controls.MemberDeleteController;
-import spms.controls.MemberListController;
-import spms.controls.MemberUpdateController;
-import spms.vo.Member;
 
 @WebServlet("*.do")
 public class DispatcherServlet extends HttpServlet{
@@ -38,33 +33,9 @@ public class DispatcherServlet extends HttpServlet{
 //			String pageControllerPath = null;
 			Controller pageController = (Controller)sc.getAttribute(servletPath); // DI 사용으로 URL마다 pageController 생성이 없어짐
 			
-			if("/member/add.do".equals(servletPath)) {
-				if(request.getParameter("email") != null) {
-					model.put("member", new Member()
-							.setEmail(request.getParameter("email"))
-							.setPassword(request.getParameter("password"))
-							.setName(request.getParameter("name"))); 
-				}
-					
-			} else if("/member/update.do".equals(servletPath)) {
-				
-				if(request.getParameter("email") == null) {
-					model.put("no", request.getParameter("no"));
-				} else {
-					model.put("member", new Member().setNo(Integer.parseInt(request.getParameter("no")))
-													.setName(request.getParameter("name"))
-													.setEmail(request.getParameter("email")));
-				}
-				
-			} else if("/member/delete.do".equals(servletPath)) {
-				model.put("member", new Member().setNo(Integer.parseInt(request.getParameter("no"))));
-				
-			} else if("/auth/login.do".equals(servletPath)) {
-				
-				if(request.getParameter("email") != null)
-					model.put("member", new Member().setEmail(request.getParameter("email"))
-												   .setPassword(request.getParameter("password")));
-			} 
+			if(pageController instanceof DataBinding) {
+				prepareRequestData(request, model, (DataBinding)pageController);
+			}
 			
 			String viewUrl = pageController.execute(model);
 			
@@ -84,6 +55,20 @@ public class DispatcherServlet extends HttpServlet{
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
+		}
+	}
+	
+	private void prepareRequestData(HttpServletRequest request, HashMap<String, Object> model, DataBinding dataBinding) throws Exception {
+		Object[] dataBinders = dataBinding.getDataBinders(); // 페이지 컨트롤러가 필요한 데이터바인더들을 가지고 얻어옴 
+		String dataName = null;
+		Class<?> dataType = null;
+		Object dataObj = null;
+		
+		for(int i=0; i<dataBinders.length; i+=2) {
+			dataName = (String)dataBinders[i];
+			dataType = (Class<?>)dataBinders[i+1];
+			dataObj = ServletRequestDataBinder.bind(request, dataType, dataName);
+			model.put(dataName, dataObj);
 		}
 	}
 	

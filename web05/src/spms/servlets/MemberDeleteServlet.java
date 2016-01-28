@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import spms.dao.MemberDao;
+import spms.dao.PostgresqlMemberDao;
 
 @WebServlet("/member/delete")
 public class MemberDeleteServlet extends HttpServlet{
@@ -23,7 +23,7 @@ public class MemberDeleteServlet extends HttpServlet{
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+			PostgresqlMemberDao memberDao = (PostgresqlMemberDao)sc.getAttribute("memberDao");
 			
 			memberDao.delete(Integer.parseInt(request.getParameter("no")));
 			

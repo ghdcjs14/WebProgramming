@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import spms.dao.MemberDao;
+import spms.dao.PostgresqlMemberDao;
 import spms.vo.Member;
 
 // 프런트 컨트롤러 적용
@@ -25,7 +25,7 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+			PostgresqlMemberDao memberDao = (PostgresqlMemberDao)sc.getAttribute("memberDao");
 			request.setAttribute("members", memberDao.selectList());
 			
 			request.setAttribute("viewUrl", "/member/MemberList.jsp");

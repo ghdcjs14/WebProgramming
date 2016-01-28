@@ -2,12 +2,12 @@ package spms.controls;
 
 import java.util.Map;
 
-import spms.dao.MemberDao;
+import spms.dao.PostgresqlMemberDao;
 
 public class MemberListController implements Controller {
-	MemberDao memberDao;
+	PostgresqlMemberDao memberDao;
 	
-	public MemberListController setMemberDao(MemberDao memberDao) {
+	public MemberListController setMemberDao(PostgresqlMemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
 	}

@@ -13,7 +13,7 @@ import spms.controls.MemberAddController;
 import spms.controls.MemberDeleteController;
 import spms.controls.MemberListController;
 import spms.controls.MemberUpdateController;
-import spms.dao.MemberDao;
+import spms.dao.PostgresqlMemberDao;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
@@ -26,7 +26,8 @@ public class ContextLoaderListener implements ServletContextListener {
 			InitialContext initialContext = new InitialContext();
 			DataSource ds = (DataSource)initialContext.lookup("java:comp/env/jdbc/studydb");
 
-			MemberDao memberDao = new MemberDao();
+//			MemberDao memberDao = new MemberDao();
+			PostgresqlMemberDao memberDao = new PostgresqlMemberDao();
 			memberDao.setDataSource(ds);
 			
 			// 의존성 주입으로 주석처리 

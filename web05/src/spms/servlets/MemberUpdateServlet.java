@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import spms.dao.MemberDao;
+import spms.dao.PostgresqlMemberDao;
 import spms.vo.Member;
 
 @WebServlet("/member/update")
@@ -34,7 +34,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+			PostgresqlMemberDao memberDao = (PostgresqlMemberDao)sc.getAttribute("memberDao");
 			
 			request.setAttribute("member", memberDao.selectOne(Integer.parseInt(request.getParameter("no"))));
 			
@@ -55,7 +55,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
+			PostgresqlMemberDao memberDao = (PostgresqlMemberDao)sc.getAttribute("memberDao");
 			
 			Member member = (Member)request.getAttribute("member");
 			memberDao.update(member);

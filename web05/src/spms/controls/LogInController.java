@@ -4,27 +4,34 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import spms.dao.MemberDao;
+import bind.DataBinding;
+import spms.dao.PostgresqlMemberDao;
 import spms.vo.Member;
 
-public class LogInController implements Controller {
+public class LogInController implements Controller, DataBinding {
 	
-	MemberDao memberDao;
+	PostgresqlMemberDao memberDao;
 	
-	public LogInController setMemberDao(MemberDao memberDao) {
+	public LogInController setMemberDao(PostgresqlMemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
 	}
 	
+	public Object[] getDataBinders() {
+		return new Object[] {
+			"logInfo", spms.vo.Member.class
+		};
+	}
+	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
+		Member logInfo = (Member)model.get("member");
 		
-		if(model.get("member") == null) {
+		if(logInfo.getEmail() == null) {
 			return "/auth/LogInForm.jsp";
 			
 		} else {
 //			MemberDao memberDao = (MemberDao)model.get("memberDao");
-			Member logInfo = (Member)model.get("member");
 			Member member = memberDao.exist(logInfo.getEmail()
 											, logInfo.getPassword());
 			if(member != null) {
