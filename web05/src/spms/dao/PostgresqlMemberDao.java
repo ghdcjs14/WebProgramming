@@ -9,8 +9,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import spms.annotation.Component;
 import spms.vo.Member;
 
+@Component("memberDao")
 public class PostgresqlMemberDao implements MemberDao {
 
 	DataSource ds;

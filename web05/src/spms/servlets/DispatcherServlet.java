@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import bind.DataBinding;
 import bind.ServletRequestDataBinder;
+import spms.context.ApplicationContext;
 import spms.controls.Controller;
+import spms.listeners.ContextLoaderListener;
 
 @WebServlet("*.do")
 public class DispatcherServlet extends HttpServlet{
@@ -24,14 +25,20 @@ public class DispatcherServlet extends HttpServlet{
 		String servletPath = request.getServletPath();
 		
 		try {
-			ServletContext sc = this.getServletContext();
+			
+//			ServletContext sc = this.getServletContext();
+			ApplicationContext ctx = ContextLoaderListener.getApplicationContext();
 			
 			HashMap<String, Object> model = new HashMap<String, Object>();
 //			model.put("memberDao", sc.getAttribute("memberDao")); // DI 사용
 			model.put("session", request.getSession());
 			
 //			String pageControllerPath = null;
-			Controller pageController = (Controller)sc.getAttribute(servletPath); // DI 사용으로 URL마다 pageController 생성이 없어짐
+//			Controller pageController = (Controller)sc.getAttribute(servletPath); // DI 사용으로 URL마다 pageController 생성이 없어짐
+			Controller pageController = (Controller)ctx.getBean(servletPath);
+			if(pageController == null) {
+				throw new Exception("요청한 페이지를 찾을 수 없습니다.");
+			}
 			
 			if(pageController instanceof DataBinding) {
 				prepareRequestData(request, model, (DataBinding)pageController);

@@ -5,9 +5,11 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import bind.DataBinding;
+import spms.annotation.Component;
 import spms.dao.PostgresqlMemberDao;
 import spms.vo.Member;
 
+@Component("/auth/login.do")
 public class LogInController implements Controller, DataBinding {
 	
 	PostgresqlMemberDao memberDao;
@@ -25,7 +27,7 @@ public class LogInController implements Controller, DataBinding {
 	
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
-		Member logInfo = (Member)model.get("member");
+		Member logInfo = (Member)model.get("logInfo");
 		
 		if(logInfo.getEmail() == null) {
 			return "/auth/LogInForm.jsp";
